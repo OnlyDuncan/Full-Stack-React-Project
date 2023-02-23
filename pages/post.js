@@ -1,16 +1,36 @@
 import { auth, db } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {toast} from "react-toastify";
 
 export default function Post() {
     //Form state
     const [post, setPost] = useState({ description: "" });
     const [user, loading] = useAuthState(auth);
+    const route = useRouter();
+
     //Submit post
     const submitPost = async (e) => {
         e.preventDefault();
+
+        //Run checks for description
+        if (!post.description) {
+            toast.error("Description Field Empty 😣", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 1500,
+            });
+            return;
+        }
+        if (post.description.length > 300) {
+            toast.error("Description Field Too Long 😣", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 1500,
+            });
+            return;
+        }
+
         //Make a new post
         const collectionRef = collection(db, "posts");
         await addDoc(collectionRef, {
@@ -20,6 +40,8 @@ export default function Post() {
             avatar: user.photoURL,
             username: user.displayName
         });
+        setPost({ description: "" });
+        return route.push("/");
     };
 
     return (
