@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function Post() {
     //Form state
