@@ -1,6 +1,6 @@
 import { auth, db } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -51,6 +51,7 @@ export default function Post() {
                 username: user.displayName
             });
             setPost({ description: "" });
+            toast.success("Post has been made 🤖", { position: toast.POSITION.TOP_CENTER, autoClose: 1500 });
             return route.push("/");
         }
     };
